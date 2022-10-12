@@ -65,13 +65,27 @@ def draw_letters():
     (1-1) create letter bank from LETTER_POOL
     (1-2) letter cannot repeat greater than quantity of LETTER_POOL
     '''
-
+    # original code
     letters = []
     while len(letters) < 10:
         letter = random.choice(list(LETTER_POOL.keys()))
         if letters.count(letter) < LETTER_POOL[letter]:
             letters.append(letter)
     return letters
+
+    # refactored code
+    # letters = LETTER_POOL.keys()
+    # print(letters)
+    # hand = []
+
+    # while len(letters) < 10:
+    #     letter = random.choice(letters)
+    #     hand.append(letter)
+    
+    # return hand
+        
+        
+
 
 def uses_available_letters(word, letter_bank):
     '''
