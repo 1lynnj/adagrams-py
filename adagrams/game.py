@@ -66,23 +66,30 @@ def draw_letters():
     (1-2) letter cannot repeat greater than quantity of LETTER_POOL
     '''
     # original code
-    letters = []
-    while len(letters) < 10:
-        letter = random.choice(list(LETTER_POOL.keys()))
-        if letters.count(letter) < LETTER_POOL[letter]:
-            letters.append(letter)
-    return letters
-
-    # refactored code
-    # letters = LETTER_POOL.keys()
-    # print(letters)
-    # hand = []
-
+    # letters = []
     # while len(letters) < 10:
-    #     letter = random.choice(letters)
-    #     hand.append(letter)
-    
-    # return hand
+    #     letter = random.choice(list(LETTER_POOL.keys()))
+    #     if letters.count(letter) < LETTER_POOL[letter]:
+    #         letters.append(letter)
+    # return letters
+
+    # refactored code to make function more efficient -- getting list of letter pool keys once
+    # and not counting each letter with every iteration 
+    letters = list(LETTER_POOL.keys())
+    hand = []
+    letter_count = {}
+
+    while len(hand) < 10:
+        letter = random.choice(letters)
+        if letter not in letter_count:
+            letter_count[letter] = 1
+        else:
+            letter_count[letter] += 1
+
+        if letter_count[letter] < LETTER_POOL[letter]:
+            hand.append(letter)
+
+    return hand
         
         
 
@@ -99,7 +106,6 @@ def uses_available_letters(word, letter_bank):
     for letter in word:
         if letter in letters:
             letters.remove(letter)
-            continue
         else:
             return False
     return True
