@@ -138,31 +138,79 @@ def get_highest_word_score(word_list):
     (5-2-a) winner rule for multiple: with fewest number of letters unless 10 letters 
                                     or if words have same number, then return first occurrence
     '''
+    # original code
+    # words_with_scores = {}
+    # for word in word_list:
+    #     score = score_word(word)
+    #     words_with_scores[word] = score
+    
+    # highest_score_word = max(words_with_scores,key=words_with_scores.get) 
+    # high_score = words_with_scores[highest_score_word]
 
-    words_with_scores = {}
+    # max_score_tuple = (highest_score_word, words_with_scores[highest_score_word])
+    
+    # multiple_max_score_words = []
+    # for key in words_with_scores:
+    #     if high_score == words_with_scores[key]:
+    #         multiple_max_score_words.append(key)
+
+    # if len(multiple_max_score_words) == 1:
+    #     return max_score_tuple
+    # else:
+    #     for i in range(0, len(multiple_max_score_words)):
+    #         if len(multiple_max_score_words[i]) == 10:
+    #             return (multiple_max_score_words[i], words_with_scores[multiple_max_score_words[i]])
+    #         elif len(multiple_max_score_words[i-1]) < len(multiple_max_score_words[i]):
+    #             current_winner = (multiple_max_score_words[i-1], words_with_scores[multiple_max_score_words[i-1]]) 
+    #         else:
+    #             current_winner = (multiple_max_score_words[i], words_with_scores[multiple_max_score_words[i]])
+
+    # return current_winner   
+
+    # code after refactor
+    '''Implement a function called `get_highest_word_score` in `game.py`. 
+    This method should have the following properties:
+
+    - Has one parameter: `word_list`, which is a list of strings
+    - Returns a tuple that represents the data of a winning word and it's score.  
+    The tuple must contain the following elements:
+        - index 0 ([0]): a string of a word
+        - index 1 ([1]): the score of that word
+    - In the case of tie in scores, use these tie-breaking rules:
+        - prefer the word with the fewest letters...
+        - ...unless one word has 10 letters. If the top score is tied between multiple words 
+        and one is 10 letters long, choose the one with 10 letters over the one with fewer tiles
+        - If the there are multiple words that are the same score and the same length, pick the 
+        first one in the supplied list'''
+
+    # create dict with words with their scores
+    words_with_score = {}
     for word in word_list:
-        score = score_word(word)
-        words_with_scores[word] = score
+        word_score = score_word(word)
+        words_with_score[word] = word_score
+
+    max_score = max(words_with_score.values())
     
-    highest_score_word = max(words_with_scores,key=words_with_scores.get) 
-    high_score = words_with_scores[highest_score_word]
+    # create dict of all words with max score
+    max_score_words = {}
 
-    max_score_tuple = (highest_score_word, words_with_scores[highest_score_word])
+    for word in words_with_score:
+        if max_score <= words_with_score[word]:
+            max_score_words[word] = words_with_score[word]
+
+    # find word with highest score using tie-breaking rules
+    winning_word = ()
+    length_of_winning_word = 10
+    for word in max_score_words:
+        if len(word) == 10: # returns the first word with 10 letters
+            return (word, max_score_words[word])
+        elif len(word) < length_of_winning_word: # returns the first word with shortest length by using < rather than <=
+            length_of_winning_word = len(word)
+            winning_word = (word, max_score_words[word])
     
-    multiple_max_score_words = []
-    for key in words_with_scores:
-        if high_score == words_with_scores[key]:
-            multiple_max_score_words.append(key)
+    return winning_word
+        
 
-    if len(multiple_max_score_words) == 1:
-        return max_score_tuple
-    else:
-        for i in range(0, len(multiple_max_score_words)):
-            if len(multiple_max_score_words[i]) == 10:
-                return (multiple_max_score_words[i], words_with_scores[multiple_max_score_words[i]])
-            elif len(multiple_max_score_words[i-1]) < len(multiple_max_score_words[i]):
-                current_winner = (multiple_max_score_words[i-1], words_with_scores[multiple_max_score_words[i-1]]) 
-            else:
-                current_winner = (multiple_max_score_words[i], words_with_scores[multiple_max_score_words[i]])
 
-    return current_winner   
+
+
