@@ -63,8 +63,6 @@ LETTER_VALUES = {
 def draw_letters():
     '''Create letter bank from letter pool. Letters cannot repeat more than values in letter pool.'''
     
-    # refactored code to make function more efficient -- getting list of letter pool keys once
-    # and not counting each letter with every iteration 
     letters = list(LETTER_POOL.keys())
     hand = []
     letter_count = {}
@@ -81,14 +79,6 @@ def draw_letters():
 
     return hand
 
-    # original code
-    # letters = []
-    # while len(letters) < 10:
-    #     letter = random.choice(list(LETTER_POOL.keys()))
-    #     if letters.count(letter) < LETTER_POOL[letter]:
-    #         letters.append(letter)
-    # return letters     
-        
 
 def uses_available_letters(word, letter_bank):
     '''Check if letters and repeated letters in word are in letterbank'''
@@ -102,12 +92,9 @@ def uses_available_letters(word, letter_bank):
             return False
     return True
 
+
 def score_word(word):
-    '''
-    (1) letter in word
-    (2) get the value from LETTER_VALUES (in dict)
-    (3) add each value to score
-    '''
+    '''Calculate score for word using letter scores from LETTER_VALUES dict'''
 
     score = 0
     word = word.upper()
@@ -126,8 +113,6 @@ def get_highest_word_score(word_list):
         - unless one word has 10 letters, word with 10 letters wins
         - if multiple words that are the same score and the same length, pick the 
         first one in the supplied list'''
-
-    # code after refactor
 
     # create dict with words with their scores
     words_with_score = {}
@@ -156,33 +141,5 @@ def get_highest_word_score(word_list):
     
     return winning_word
         
-    # original code
-    # words_with_scores = {}
-    # for word in word_list:
-    #     score = score_word(word)
-    #     words_with_scores[word] = score
-    
-    # highest_score_word = max(words_with_scores,key=words_with_scores.get) 
-    # high_score = words_with_scores[highest_score_word]
-
-    # max_score_tuple = (highest_score_word, words_with_scores[highest_score_word])
-    
-    # multiple_max_score_words = []
-    # for key in words_with_scores:
-    #     if high_score == words_with_scores[key]:
-    #         multiple_max_score_words.append(key)
-
-    # if len(multiple_max_score_words) == 1:
-    #     return max_score_tuple
-    # else:
-    #     for i in range(0, len(multiple_max_score_words)):
-    #         if len(multiple_max_score_words[i]) == 10:
-    #             return (multiple_max_score_words[i], words_with_scores[multiple_max_score_words[i]])
-    #         elif len(multiple_max_score_words[i-1]) < len(multiple_max_score_words[i]):
-    #             current_winner = (multiple_max_score_words[i-1], words_with_scores[multiple_max_score_words[i-1]]) 
-    #         else:
-    #             current_winner = (multiple_max_score_words[i], words_with_scores[multiple_max_score_words[i]])
-
-    # return current_winner  
 
 
